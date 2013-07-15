@@ -181,6 +181,28 @@ byte alarmNow;
 byte modeShowAlarmTime;
 byte SoundSequence; 
 
+// -------------- Prototypes -------------------
+// The Arduino IDE automagically adds prototypes, but when compiling from the command line you don't get the luxury of such magic.
+void DisplayWords(char WordIn1[], unsigned int duration);
+void DisplayWords(char WordIn1[], char WordIn2[], unsigned int duration);
+void DisplayWords(char WordIn1[], char WordIn2[], char WordIn3[], unsigned int duration);
+void DisplayWords(char WordIn1[], char WordIn2[], char WordIn3[], char WordIn4[], unsigned int duration);
+void DisplayWords(char WordIn1[], char WordIn2[], char WordIn3[], char WordIn4[], unsigned int duration, byte count);
+void DisplayWordSequence();
+void DisplayWord(char WordIn[], unsigned int duration);
+void DisplayWordDP(char WordIn[]);
+void DisplayMenuOptionName(void);
+void EEReadSettings(void);
+void SerialPrintTime();
+void updateNightLight(void);
+void UpdateDisplay(byte forceUpdate);
+void processSerialMessage();
+void TimeDisplay(byte DisplayModeLocal, byte forceUpdateCopy);
+void EESaveSettings(void);
+void AdjDayMonthYear(int8_t AdjDay, int8_t AdjMonth, int8_t AdjYear);
+boolean AlarmIndicate(void);
+void printDigits(int digits);
+
 void incrementAlarm(void)
 {  // Advance alarm time by one minute 
 
