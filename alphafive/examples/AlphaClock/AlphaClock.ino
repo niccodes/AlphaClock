@@ -250,7 +250,7 @@ void TurnOffAlarm(void) {
 	}
 }
 
-void checkButtons(void ) {
+void checkButtons(void) {
 	buttonMonitor |= a5GetButtons();
 
 	if (milliTemp  >=  NextButtonCheck) { // Typically, go through this every 20 ms.
@@ -374,7 +374,7 @@ void checkButtons(void ) {
 
 			// Check to see if both time-set button and plus button are both currently depressed:
 
-			if (( buttonMonitor & a5_TimeSetPlusBtns) == a5_TimeSetPlusBtns)
+			if (( buttonMonitor & a5_TimeSetPlusBtns) == a5_TimeSetPlusBtns) {
 				if (TimeChanged < 2) {
 					adjustTime(60); // Add one minute
 					RedrawNow = 1;
@@ -389,9 +389,10 @@ void checkButtons(void ) {
 						RTC.set(now());
 					}
 				}
+			}
 
 			// Check to see if both time-set button and minus button are both currently depressed:
-			if (( buttonMonitor & a5_TimeSetMinusBtns) == a5_TimeSetMinusBtns)
+			if (( buttonMonitor & a5_TimeSetMinusBtns) == a5_TimeSetMinusBtns) {
 				if (TimeChanged < 2) {
 					adjustTime(-60); // Subtract one minute
 					RedrawNow = 1;
@@ -407,6 +408,7 @@ void checkButtons(void ) {
 						RTC.set(now());
 					}
 				}
+			}
 
 			/////////////////////////////  Time-Of-Alarm Adjustments  /////////////////////////////
 
@@ -417,16 +419,18 @@ void checkButtons(void ) {
 			//    and no other high-priority modes are enabled...
 
 
-			if (( buttonMonitor & a5_alarmSetBtn) && (modeShowAlarmTime == 0))
-				if ((( buttonMonitor & a5_timeSetBtn) == 0) && (modeShowText == 0))
+			if (( buttonMonitor & a5_alarmSetBtn) && (modeShowAlarmTime == 0)) {
+				if ((( buttonMonitor & a5_timeSetBtn) == 0) && (modeShowText == 0)) {
 					if ( milliTemp >= (Btn1_AlrmSet_StartTime + 40 )) { // of those "ifs," Check hold-time LAST.
 						modeShowAlarmTime = 1;
 						RedrawNow = 1;
 						AlarmTimeChanged = 0;
 					}
+				}
+			}
 
 			// Check to see if both alarm-set button and plus button are both currently depressed:
-			if (( buttonMonitor & a5_AlarmSetPlusBtns) == a5_AlarmSetPlusBtns)
+			if (( buttonMonitor & a5_AlarmSetPlusBtns) == a5_AlarmSetPlusBtns) {
 				if (TimeChanged < 2) {
 					incrementAlarm(); // Add one minute
 					RedrawNow = 1;
@@ -437,9 +441,10 @@ void checkButtons(void ) {
 					RedrawNow_NoFade = 1;
 					//          TimeChanged = 1;
 				}
+			}
 
 			// Check to see if both alarm-set button and minus button are both currently depressed:
-			if (( buttonMonitor & a5_AlarmSetMinusBtns) == a5_AlarmSetMinusBtns)
+			if (( buttonMonitor & a5_AlarmSetMinusBtns) == a5_AlarmSetMinusBtns) {
 				if (TimeChanged < 2) {
 					decrementAlarm(); // Subtract one minute
 					RedrawNow = 1;
@@ -450,6 +455,7 @@ void checkButtons(void ) {
 					RedrawNow_NoFade = 1;
 					//          TimeChanged = 1;
 				}
+			}
 
 
 			// Check to see if both S1 and S2 are both currently depressed:
@@ -533,12 +539,13 @@ void checkButtons(void ) {
 					}
 
 					// IF no other buttons are down, increase brightness:
-					if (((buttonMonitor & a5_allButtonsButPlus) == 0) && (AlarmTimeChanged + TimeChanged == 0))
+					if (((buttonMonitor & a5_allButtonsButPlus) == 0) && (AlarmTimeChanged + TimeChanged == 0)) {
 						if (Brightness < BrightnessMax) {
 							Brightness++;
 							UpdateBrightness = 1;
 							UpdateEE = 1;
 						}
+					}
 				}
 			}
 
@@ -553,12 +560,13 @@ void checkButtons(void ) {
 					}
 
 					// IF no other buttons are down, and times have not been adjusted, decrease brightness:
-					if(((buttonMonitor & a5_allButtonsButMinus) == 0) && (AlarmTimeChanged + TimeChanged == 0))
+					if(((buttonMonitor & a5_allButtonsButMinus) == 0) && (AlarmTimeChanged + TimeChanged == 0)) {
 						if (Brightness > 0) {
 							Brightness--;
 							UpdateBrightness = 1;
 							UpdateEE = 1;
 						}
+					}
 				}
 			}
 		} // End not-in-config-menu statements
@@ -1151,13 +1159,9 @@ void SerialSendDataDaisyChain (char DataIn[]) {
 
 
 void processSerialMessage() {
-
 	char c, c2;
 	byte i, temp, temp2;
-	int8_t paramNo, valueNo;
 	char OutputCache[13];
-
-
 
 	// if time sync available from serial port, update time and return true
 	while(Serial.available() >=  a5_COMM_MSG_LEN ) { // time message consists of a header and ten ascii digits
@@ -1277,9 +1281,7 @@ void processSerialMessage() {
 						SerialSendDataDaisyChain (OutputCache);
 					}
 				}
-			}
-
-			else if( c == 'M' ) { // Mode setting commands
+			} else if( c == 'M' ) { // Mode setting commands
 				// Eventually, it would be nice to have all settings and functions
 				// accessible through the remote interface.
 
@@ -1371,7 +1373,7 @@ void UpdateDisplay (byte forceUpdate) {
 				a5BeginFadeToOSB();
 			}
 		}
-	} else  if (modeLEDTest) { //LED Test Mode
+	} else if (modeLEDTest) { //LED Test Mode
 		if (milliTemp > DisplayWordEndTime) {
 			forceUpdate = 1;
 			SoundSequence++;
@@ -1402,9 +1404,7 @@ void UpdateDisplay (byte forceUpdate) {
 			RedrawNow = 1;
 		}
 
-	}
-
-	else if (modeShowMenu) {
+	} else if (modeShowMenu) {
 
 		DisplayWordDP("_____");
 		byte ExtendTextDisplay = 0;
@@ -1492,9 +1492,7 @@ void UpdateDisplay (byte forceUpdate) {
 				optionValue = 0;
 			}
 			ExtendTextDisplay = 1;
-		}
-
-		else if (menuItem == numberCharSetMenuItem) {
+		} else if (menuItem == numberCharSetMenuItem) {
 			numberCharSet += optionValue;
 			if (optionValue != 0) {
 				optionValue = 0;
@@ -1509,9 +1507,7 @@ void UpdateDisplay (byte forceUpdate) {
 
 			DisplayWord ("01237", 500); // Sample font display
 			ExtendTextDisplay = 1;
-		}
-
-		else if (menuItem == DisplayStyleMenuItem) {
+		} else if (menuItem == DisplayStyleMenuItem) {
 			temp = (DisplayMode & 3U);
 
 			if (optionValue != 0) {
@@ -1585,9 +1581,7 @@ void UpdateDisplay (byte forceUpdate) {
 				forceUpdate = 1;
 			}
 			TimeDisplay(35, forceUpdate); // Show clock time, in appropriate style
-		}
-
-		else if (menuItem == SetMonthMenuItem) {
+		} else if (menuItem == SetMonthMenuItem) {
 			if (optionValue != 0) {
 				AdjDayMonthYear(0, optionValue, 0); // Day, Month, Year
 				optionValue = 0;
@@ -1601,9 +1595,7 @@ void UpdateDisplay (byte forceUpdate) {
 				forceUpdate = 1;
 			}
 			TimeDisplay(33, forceUpdate); // Show clock time, in appropriate style
-		}
-
-		else if (menuItem == SetSecondsMenuItem) {
+		} else if (menuItem == SetSecondsMenuItem) {
 			if (optionValue != 0) {
 				adjustTime(optionValue); // Adjust by +/- 1 second
 				if (UseRTC) {
@@ -1627,15 +1619,9 @@ void UpdateDisplay (byte forceUpdate) {
 		TimeDisplay(33, forceUpdate); // Show date
 	} else if (modeShowAlarmTime) {
 		TimeDisplay(20, forceUpdate); // Show alarm time
-	}
-
-	else {
+	} else {
 		// Time Display Mode!  Possibly with aux. display.
-
-
 		if ((DisplayMode > 3) && (DisplayMode < 32)) {
-
-
 			if (buttonMonitor) {
 				// Do not use alternate display modes when buttons are pressed.
 				DisplayModePhase = 0;
@@ -1660,9 +1646,6 @@ void UpdateDisplay (byte forceUpdate) {
 
 			}
 
-
-
-
 			if (DisplayModePhase == 0) {
 				TimeDisplay(DisplayMode & 3, forceUpdate);  // "Normal" time display
 			} else {
@@ -1678,7 +1661,6 @@ void UpdateDisplay (byte forceUpdate) {
 		} else {
 			TimeDisplay(DisplayMode, forceUpdate);
 		}
-
 	}
 }
 
@@ -1706,7 +1688,7 @@ void AdjDayMonthYear (int8_t AdjDay, int8_t AdjMonth, int8_t AdjYear) {
 		dayTemp = monthDays[moTemp - 1];
 	}
 
-	if (dayTemp > monthDays[moTemp - 1])
+	if (dayTemp > monthDays[moTemp - 1]) {
 		if (AdjDay > 0) {
 			// Roll over day-of-month to 1, if explicitly requesting increase in date.
 			dayTemp = 1;
@@ -1714,6 +1696,7 @@ void AdjDayMonthYear (int8_t AdjDay, int8_t AdjMonth, int8_t AdjYear) {
 			// Otherwise, we should "truncate" the date to last day of month.
 			dayTemp = monthDays[moTemp - 1];
 		}
+	}
 
 	setTime(hour(timeTemp), minute(timeTemp), second(timeTemp),
 	        dayTemp, moTemp, yrTemp);
@@ -1721,9 +1704,6 @@ void AdjDayMonthYear (int8_t AdjDay, int8_t AdjMonth, int8_t AdjYear) {
 		RTC.set(now());
 	}
 }
-
-
-
 
 void TimeDisplay (byte DisplayModeLocal, byte forceUpdateCopy)  {
 	byte temp;
@@ -1799,8 +1779,6 @@ void TimeDisplay (byte DisplayModeLocal, byte forceUpdateCopy)  {
 		}
 
 		if (DisplayModeLocal & 1) { // Seconds Spinner Mode
-
-
 			// binary tree for 8 cases:  three tests max, rather than 8.
 			// Split seconds into octants: 0-6,7-14,15-22,23-29,30-36,37-44,45-52,53-59
 
@@ -1889,9 +1867,7 @@ void TimeDisplay (byte DisplayModeLocal, byte forceUpdateCopy)  {
 
 		MinNowOnesLast = MinNowOnes;
 
-	}
-
-	else if (DisplayModeLocal == 32) { //Seconds only
+	} else if (DisplayModeLocal == 32) { //Seconds only
 
 		temp = SecNow;
 
@@ -1913,9 +1889,7 @@ void TimeDisplay (byte DisplayModeLocal, byte forceUpdateCopy)  {
 			a5BeginFadeToOSB();
 		}
 		SecLast = SecNow;
-	}
-
-	else if (DisplayModeLocal == 33) { //Month, Day
+	} else if (DisplayModeLocal == 33) { //Month, Day
 
 		if(forceUpdateCopy) {
 			temp = day();
@@ -1970,9 +1944,6 @@ void TimeDisplay (byte DisplayModeLocal, byte forceUpdateCopy)  {
 			a5BeginFadeToOSB();
 		}
 	} else if (DisplayModeLocal == 36) { //FLW - FIVE LETTER WORD mode
-
-
-
 		if(forceUpdateCopy) {
 			if (DisplayModeLocalLast != 36) {
 				// Pick new display word, but only when first entering mode 36.
@@ -2008,8 +1979,6 @@ void TimeDisplay (byte DisplayModeLocal, byte forceUpdateCopy)  {
 			if (temp < 50) {
 				WordIn[0] = 'Z';
 			}
-
-
 
 			a5clearOSB();
 			a5loadOSB_Ascii(WordIn, a5_brightLevel);
@@ -2144,9 +2113,6 @@ void EEReadSettings (void) {
 	} else {
 		DisplayMode = value;
 	}
-
-
-
 }
 
 
@@ -2221,6 +2187,3 @@ void EESaveSettings (void) {
 		}
 	}
 }
-
-
-
