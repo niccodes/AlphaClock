@@ -190,7 +190,7 @@ void DisplayWords(char WordIn1[], char WordIn2[], unsigned int duration);
 void DisplayWords(char WordIn1[], char WordIn2[], char WordIn3[], unsigned int duration);
 void DisplayWords(char WordIn1[], char WordIn2[], char WordIn3[], char WordIn4[], unsigned int duration);
 void DisplayWords(char WordIn1[], char WordIn2[], char WordIn3[], char WordIn4[], unsigned int duration, byte count);
-void DisplayWordSequence();
+void DisplayWordSequence(byte sequence);
 void DisplayWord(char WordIn[], unsigned int duration);
 void DisplayWordDP(char WordIn[]);
 void DisplayMenuOptionName(void);
@@ -204,6 +204,7 @@ void EESaveSettings(void);
 void AdjDayMonthYear(int8_t AdjDay, int8_t AdjMonth, int8_t AdjYear);
 boolean AlarmIndicate(void);
 void printDigits(int digits);
+void EndVCRmode();
 
 void incrementAlarm(void) {
 	// Advance alarm time by one minute
